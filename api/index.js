@@ -1,7 +1,7 @@
 const express = require('express')
-const cors = require('cors')
 const { ApolloServer } = require('apollo-server-express')
 const { resolvers, typeDefs } = require('./schema')
+var cors = require('cors')
 const jwt = require('express-jwt')
 
 // this is not secure! this is for dev purposes
@@ -10,8 +10,6 @@ process.env.JWT_SECRET = process.env.JWT_SECRET || 'somereallylongsecretkey'
 const PORT = process.env.PORT || 3500
 const app = express()
 const { categories } = require('./db.json')
-
-app.use(cors())
 
 // auth middleware
 const auth = jwt({
@@ -33,6 +31,8 @@ const server = new ApolloServer({
 })
 
 app.use(auth)
+
+app.use(cors())
 
 const errorHandler = (err, req, res, next) => {
   if (res.headersSent) {
