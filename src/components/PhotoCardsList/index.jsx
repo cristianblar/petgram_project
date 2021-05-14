@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useParams } from 'react-router-dom';
 import { useQuery, gql } from '@apollo/client';
 
 import Loading from '../Loading/index';
 import Error from '../Error';
 import PhotoCard from '../PhotoCard/index';
+
+import { Context } from '../../Context';
 
 const PHOTOS_QUERY = gql`
   query getPhotos($categoryId: ID) {
@@ -21,6 +23,8 @@ const PHOTOS_QUERY = gql`
 
 const PhotoCardsList = () => {
   const { id } = useParams();
+
+  const { isLogged } = useContext(Context);
 
   const { loading, error, data } = useQuery(PHOTOS_QUERY, {
     variables: { categoryId: id },
@@ -39,6 +43,7 @@ const PhotoCardsList = () => {
           src={photo.src}
           likes={photo.likes}
           liked={photo.liked}
+          isLogged={isLogged}
         />
       ))}
     </ul>

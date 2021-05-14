@@ -11,15 +11,15 @@ export const UserContext = ({ children }) => {
   const apolloClient = useApolloClient();
 
   const logUser = (token) => {
+    setIsLogged(true);
     window.sessionStorage.setItem('token', token);
-    setIsLogged(token);
-    apolloClient.clearStore();
+    apolloClient.resetStore();
     window.location.href = '/profile';
   };
 
   const closeSession = () => {
-    window.sessionStorage.removeItem('token');
     setIsLogged(false);
+    window.sessionStorage.removeItem('token');
     apolloClient.clearStore();
     window.location.href = '/';
   };

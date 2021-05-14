@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import { Helmet } from 'react-helmet';
 
 import { Context } from '../../Context';
 
@@ -10,13 +11,22 @@ const Profile = () => {
   const { closeSession } = useContext(Context);
 
   return (
-    <MainContainer>
-      <Title>Account</Title>
-      <ProfileLogo />
-      <Button type="button" onClick={closeSession}>
-        Sign out
-      </Button>
-    </MainContainer>
+    <>
+      <Helmet>
+        <title>Petgram - Account</title>
+        <meta
+          name="description"
+          content="Your Petgram account management section"
+        />
+      </Helmet>
+      <MainContainer>
+        <Title>Account</Title>
+        <ProfileLogo />
+        <Button type="button" onClick={closeSession}>
+          Sign out
+        </Button>
+      </MainContainer>
+    </>
   );
 };
 

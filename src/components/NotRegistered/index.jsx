@@ -1,6 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useMutation, gql } from '@apollo/client';
+import { Helmet } from 'react-helmet';
 
 import { Context } from '../../Context';
 
@@ -47,6 +48,9 @@ const NotRegistered = () => {
 
   return (
     <>
+      <Helmet>
+        <title>Petgram - Sign in!</title>
+      </Helmet>
       <Figure>
         <SignInLogo />
       </Figure>

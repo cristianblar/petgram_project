@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
-import { useHistory } from 'react-router-dom';
 import { useMutation, gql } from '@apollo/client';
+import { Helmet } from 'react-helmet';
 
 import { Context } from '../../Context';
 
@@ -21,12 +21,9 @@ const SignUp = () => {
 
   const { logUser } = useContext(Context);
 
-  const history = useHistory();
-
   const [registerUser, { loading, error }] = useMutation(REGISTER_USER, {
     onCompleted: ({ signup }) => {
       logUser(signup); // signup is the JWT returned by GQL
-      history.push('/');
     },
   });
 
@@ -50,6 +47,10 @@ const SignUp = () => {
 
   return (
     <>
+      <Helmet>
+        <title>Petgram - Sign up!</title>
+        <meta name="description" content="Petgram account registration" />
+      </Helmet>
       <Figure>
         <RegistrationLogo />
       </Figure>

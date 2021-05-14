@@ -15,7 +15,7 @@ export const ImageWrapper = styled.figure`
     height: 60vh;
     margin-bottom: 24px;
     max-width: unset;
-    padding: 0 2px;
+    padding: 0 12px;
   }
 `;
 export const Image = styled.img`

@@ -1,13 +1,11 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useState, useEffect, useRef, useContext } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { useMutation, gql } from '@apollo/client';
 
 import { MdFavoriteBorder, MdFavorite } from 'react-icons/md';
 
 import { Article, ImageWrapper, Image, Button } from './styles';
-
-import { Context } from '../../Context';
 
 const DEFAULT_IMAGE = `https://i.imgur.com/F2NgFBg.jpeg`;
 
@@ -27,18 +25,15 @@ const PhotoCard = ({
   likes = 0,
   src = DEFAULT_IMAGE,
   detailPage,
+  isLogged,
 }) => {
   const [visibility, setVisibility] = useState(false);
-
-  const { isLogged, closeSession } = useContext(Context);
 
   const history = useHistory();
 
   const element = useRef(null);
 
-  const [toggleLike] = useMutation(LIKE_PHOTO, {
-    onError: () => closeSession(),
-  });
+  const [toggleLike] = useMutation(LIKE_PHOTO);
 
   const handleLikeClick = () =>
     isLogged

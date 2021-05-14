@@ -5,9 +5,7 @@ import {
   ApolloProvider,
   createHttpLink,
   InMemoryCache,
-  from,
 } from '@apollo/client';
-import { onError } from '@apollo/client/link/error';
 
 import API_URL from './constants';
 
@@ -30,17 +28,7 @@ const authMw = new ApolloLink((operation, forward) => {
 
 const client = new ApolloClient({
   cache: new InMemoryCache(),
-  link: from([
-    onError(({ networkError }) => {
-      if (networkError && networkError.result.code === 'invalid_token') {
-        window.sessionStorage.removeItem('token');
-        client.resetStore();
-        window.location.href = '/profile';
-      }
-    }),
-    authMw,
-    httpLink,
-  ]),
+  link: authMw.concat(httpLink),
 });
 
 const Apollo = ({ children }) => (

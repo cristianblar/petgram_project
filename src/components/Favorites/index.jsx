@@ -1,12 +1,10 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { useQuery, gql } from '@apollo/client';
 import { MdFavorite } from 'react-icons/md';
-
-import { Context } from '../../Context';
+import { Helmet } from 'react-helmet';
 
 import Loading from '../Loading/index';
-import Error from '../Error/index';
 import FavoritesLogo from '../FavoritesLogo/index';
 
 import {
@@ -33,18 +31,14 @@ const FAVORITES_QUERY = gql`
 `;
 
 const Favorites = () => {
-  const { closeSession } = useContext(Context);
-
   const { loading, error, data } = useQuery(FAVORITES_QUERY, {
     fetchPolicy: 'network-only',
-    onError: () => closeSession(),
+    errorPolicy: 'all',
   });
-
-  if (error) return <Error />;
 
   if (loading) return <Loading />;
 
-  if (!loading && data && !data.favs.length)
+  if ((!loading && (!data || !data.favs || !data.favs.length)) || error)
     return (
       <MainContainer>
         <FavoritesLogo />
@@ -59,20 +53,29 @@ const Favorites = () => {
     );
 
   return (
-    <PhotosContainer>
-      <PhotosTitle>Favorite Pets 🐶</PhotosTitle>
-      <PhotosList>
-        {data.favs.map((fav) => (
-          <li key={fav.id}>
-            <Link to={`/detail/${fav.id}`}>
-              <ImageContainer>
-                <Image src={fav.src} alt="pet" />
-              </ImageContainer>
-            </Link>
-          </li>
-        ))}
-      </PhotosList>
-    </PhotosContainer>
+    <>
+      <Helmet>
+        <title>Petgram - Favorite pets</title>
+        <meta
+          name="description"
+          content="The account section where you can find your liked pets"
+        />
+      </Helmet>
+      <PhotosContainer>
+        <PhotosTitle>Favorite Pets 🐶</PhotosTitle>
+        <PhotosList>
+          {data.favs.map((fav) => (
+            <li key={fav.id}>
+              <Link to={`/detail/${fav.id}`}>
+                <ImageContainer>
+                  <Image src={fav.src} alt="pet" />
+                </ImageContainer>
+              </Link>
+            </li>
+          ))}
+        </PhotosList>
+      </PhotosContainer>
+    </>
   );
 };
 

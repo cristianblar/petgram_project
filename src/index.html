@@ -4,9 +4,31 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="An Instagram web app for Pets!" />
+    <link
+      rel="shortcut icon"
+      href="https://cdn.iconscout.com/icon/free/png-512/pets-3-1131152.png"
+      type="image/png"
+    />
     <title>Petgram</title>
+    <link rel="apple-touch-icon" href="https://cdn.iconscout.com/icon/free/png-512/pets-3-1131152.png" />
+    <meta name="apple-mobile-web-app-title" content="Petgram" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   </head>
   <body>
     <div id="app"></div>
+    <noscript>JavaScript is required for this Web App</noscript>
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function () {
+          navigator.serviceWorker
+            .register('/service-worker.js')
+            .then((registration) => console.log('SW Registered'))
+            .catch((registrationErr) =>
+              console.error('SW Error', registrationErr)
+            );
+        });
+      }
+    </script>
   </body>
 </html>

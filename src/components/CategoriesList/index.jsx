@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import Category from '../Category/index';
+import { Helmet } from 'react-helmet';
 
 import { List, Item } from './styles';
 
 import Loading from '../Loading/index';
 import Error from '../Error';
+import Category from '../Category/index';
 
 import API_URL from '../../constants';
 
@@ -55,6 +56,9 @@ const CategoriesList = () => {
 
   return (
     <>
+      <Helmet>
+        <title>Petgram - The most awesome pets&apos; pictures</title>
+      </Helmet>
       <List id="categories-list">
         {categories.map((category) => (
           <Item key={category.id}>
