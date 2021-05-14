@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import Category from '../Category/index';
 
-import { List, Item, LoadingContainer } from './styles';
+import { List, Item } from './styles';
 
 import Loading from '../Loading/index';
+import Error from '../Error';
 
 import API_URL from '../../constants';
 
 const CategoriesList = () => {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
     setLoading(true);
@@ -19,7 +21,10 @@ const CategoriesList = () => {
         setCategories(data);
         setLoading(false);
       })
-      .catch((error) => console.error(error));
+      .catch(() => {
+        setLoading(false);
+        setError(true);
+      });
   }, []);
 
   useEffect(() => {
@@ -44,12 +49,9 @@ const CategoriesList = () => {
     }
   }, [categories, loading]);
 
-  if (loading)
-    return (
-      <LoadingContainer>
-        <Loading />
-      </LoadingContainer>
-    );
+  if (loading) return <Loading />;
+
+  if (!loading && error) return <Error />;
 
   return (
     <>
@@ -58,7 +60,7 @@ const CategoriesList = () => {
           <Item key={category.id}>
             <Category
               cover={category.cover}
-              path={category.path}
+              path={`/pet/${category.id}`}
               emoji={category.emoji}
             />
           </Item>
@@ -69,7 +71,7 @@ const CategoriesList = () => {
           <Item key={category.id}>
             <Category
               cover={category.cover}
-              path={category.path}
+              path={`/pet/${category.id}`}
               emoji={category.emoji}
             />
           </Item>

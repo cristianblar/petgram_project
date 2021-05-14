@@ -18,4 +18,8 @@ export const Image = styled.img`
   object-fit: cover;
   height: 75px;
   width: 75px;
+  transition: 0.5s;
+  &:hover {
+    transform: scale(1.15);
+  }
 `;

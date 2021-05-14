@@ -6,6 +6,7 @@ export const List = styled.ul`
   display: flex;
   overflow: scroll;
   margin-bottom: 18px;
+  padding: 8px 0;
   width: 100%;
   &.fixed {
     ${fadeIn('300ms')}
@@ -37,9 +38,4 @@ export const Item = styled.li`
   &::-webkit-scrollbar {
     display: none;
   }
-`;
-
-export const LoadingContainer = styled.div`
-  text-align: center;
-  width: 100%;
 `;

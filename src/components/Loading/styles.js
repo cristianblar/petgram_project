@@ -27,7 +27,7 @@ const ldsEllipsis3 = keyframes`
   }
 `;
 
-const MainContainer = styled.div`
+export const MainContainer = styled.div`
   display: inline-block;
   position: relative;
   width: 80px;
@@ -59,4 +59,7 @@ const MainContainer = styled.div`
   }
 `;
 
-export default MainContainer;
+export const LoadingContainer = styled.div`
+  text-align: center;
+  width: 100%;
+`;

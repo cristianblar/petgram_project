@@ -1,14 +1,16 @@
 import React from 'react';
 
-import MainContainer from './styles';
+import { LoadingContainer, MainContainer } from './styles';
 
 const Loading = () => (
-  <MainContainer>
-    <div />
-    <div />
-    <div />
-    <div />
-  </MainContainer>
+  <LoadingContainer>
+    <MainContainer>
+      <div />
+      <div />
+      <div />
+      <div />
+    </MainContainer>
+  </LoadingContainer>
 );
 
 export default Loading;

@@ -6,6 +6,7 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'app.bundle.js',
+    publicPath: '/',
   },
   resolve: {
     extensions: ['.js', '.jsx'],
@@ -26,4 +27,7 @@ module.exports = {
       template: './src/index.html',
     }),
   ],
+  devServer: {
+    historyApiFallback: true,
+  },
 };

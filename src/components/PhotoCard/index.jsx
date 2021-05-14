@@ -1,22 +1,53 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useState, useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect, useRef, useContext } from 'react';
+import { Link, useHistory } from 'react-router-dom';
+import { useMutation, gql } from '@apollo/client';
+
 import { MdFavoriteBorder, MdFavorite } from 'react-icons/md';
 
-import useLocalStorage from '../../hooks/useLocalStorage';
+import { Article, ImageWrapper, Image, Button } from './styles';
 
-import { Article, Button, ImageWrapper, Image } from './styles';
+import { Context } from '../../Context';
 
-const DEFAULT_IMAGE = `https://res.cloudinary.com/midudev/image/upload/w_300/q_80/v1560262103/dogs.png`;
+const DEFAULT_IMAGE = `https://i.imgur.com/F2NgFBg.jpeg`;
 
-const PhotoCard = ({ uniqueId, likes = 0, src = DEFAULT_IMAGE }) => {
+const LIKE_PHOTO = gql`
+  mutation likePhoto($input: LikePhoto!) {
+    likePhoto(input: $input) {
+      id
+      liked
+      likes
+    }
+  }
+`;
+
+const PhotoCard = ({
+  uniqueId,
+  liked,
+  likes = 0,
+  src = DEFAULT_IMAGE,
+  detailPage,
+}) => {
   const [visibility, setVisibility] = useState(false);
 
-  const [like, setLike] = useLocalStorage(uniqueId, false);
+  const { isLogged, closeSession } = useContext(Context);
+
+  const history = useHistory();
 
   const element = useRef(null);
 
-  // LazyLoading
+  const [toggleLike] = useMutation(LIKE_PHOTO, {
+    onError: () => closeSession(),
+  });
+
+  const handleLikeClick = () =>
+    isLogged
+      ? toggleLike({
+          variables: { input: { id: uniqueId } },
+        })
+      : history.push('/signin');
+
+  // LazyLoading for pictures
   useEffect(() => {
     const intersectionObserver = new IntersectionObserver((entries) => {
       const { isIntersecting } = entries[0];
@@ -28,20 +59,26 @@ const PhotoCard = ({ uniqueId, likes = 0, src = DEFAULT_IMAGE }) => {
     intersectionObserver.observe(element.current);
   }, [element]);
 
-  const LikeIcon = like ? MdFavorite : MdFavoriteBorder;
-
   return (
     <Article ref={element}>
       {visibility && (
         <>
-          <Link to="#">
-            <ImageWrapper>
-              <Image src={src} alt="Animal" />
+          <Link to={`/detail/${uniqueId}`}>
+            <ImageWrapper className={detailPage ? 'detail-page' : ''}>
+              <Image
+                className={detailPage ? 'detail-page' : ''}
+                src={src}
+                alt="Animal"
+              />
             </ImageWrapper>
           </Link>
-          <Button type="button" onClick={() => setLike(!like)}>
-            <LikeIcon size="32px" />
-            {likes} likes!
+          <Button type="button" onClick={handleLikeClick}>
+            {liked ? (
+              <MdFavorite size="32px" />
+            ) : (
+              <MdFavoriteBorder size="32px" />
+            )}
+            {likes} {likes === 1 ? 'like!' : 'likes!'}
           </Button>
         </>
       )}
